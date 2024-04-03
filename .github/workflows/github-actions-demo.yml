@@ -33,20 +33,25 @@ jobs:
     needs: Build
     environment: Test
     steps:
-      - run: echo "Testing...."
+      - run: echo "🧪 Testing..."
+
   Load-Test:
     runs-on: ubuntu-latest
-    needs: Build
     if: github.event_name == 'workflow_dispatch'
+    needs: Build
     environment: Load-Test
     steps:
-      - run: echo "Testing...."
-      - run: sleep 15
+      - run: |
+          echo "🧪 Testing..."
+          sleep 15
+
   Production:
     runs-on: ubuntu-latest
-    needs: Test,Load-Test
-    environment: Production
-    if: github.event.intputs.environment == 'Production'
+    needs: [Test, Load-Test]
+    environment:
+      name: Production
+      url: https://writeabout.net
+    if: github.event.inputs.environment == 'Production'
     steps:
       - run: |
           echo "🚀 Step 1..."
@@ -63,6 +68,3 @@ jobs:
       - run: |
           echo "🚀 Step 5..."
           sleep 10
-      
-          
-    
